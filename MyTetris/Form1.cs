@@ -18,22 +18,27 @@ namespace MyTetris
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             size = 25;
             currentShape = new Shape(3, 0);
-
+            whiteBrush = new SolidBrush(Color.White);
             
         }
 
         int size;
         int[,] map = new int[16, 8];
         Shape currentShape;
+        SolidBrush whiteBrush;
+        Graphics g;
 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Graphics g = Graphics.FromImage(pictureBox1.Image);
+            g = Graphics.FromImage(pictureBox1.Image);
+            g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
             DrawGrid(g);
             currentShape.MoveDown();
             Marge();
             DrawMap(g);
+            resetArea();
+            
 
 
 
@@ -75,9 +80,47 @@ namespace MyTetris
                 {
                     if (map[i, j] == 1)
                     {
-                        e.FillRectangle(Brushes.Red, new Rectangle(50 + j * size, 50 + i * size, size, size));
+                        e.FillRectangle(Brushes.Red, new Rectangle(50 + j * size+1, 50 + i * size+1, size-1, size-1));
                     }
                 }
+            }
+        }
+        public void resetArea()
+        {
+            for (int i = currentShape.y; i < currentShape.y + 3; i++)
+            {
+                for (int j = currentShape.x; j < currentShape.x + 3; j++)
+                {
+                    map[i, j] = 0;
+
+                }
+
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Left)
+            {
+                currentShape.MoveLeft();
+                g = Graphics.FromImage(pictureBox1.Image);
+                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                DrawGrid(g);
+                Marge();
+                DrawMap(g);
+                resetArea();
+                pictureBox1.Invalidate();
+            }
+            if (e.KeyCode==Keys.Right)
+            {
+                currentShape.MoveRight();
+                g = Graphics.FromImage(pictureBox1.Image);
+                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                DrawGrid(g);
+                Marge();
+                DrawMap(g);
+                resetArea();
+                pictureBox1.Invalidate();
             }
         }
     }
