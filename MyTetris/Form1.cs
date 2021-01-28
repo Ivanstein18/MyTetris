@@ -70,12 +70,28 @@ namespace MyTetris
         {
             for (int i = currentShape.y+currentShape.sizeMatrix-1; i >= currentShape.y; i--)
             {
-                for (int j = currentShape.x + 1; j < currentShape.x + currentShape.sizeMatrix; j++)   //! +1
+                for (int j = currentShape.x ; j < currentShape.x + currentShape.sizeMatrix; j++)
                 {
                     if (currentShape.matrix[i-currentShape.y,j-currentShape.x]!=0)
                     {
                     if (i + 1 == 16) return true;
                     if (map[i + 1, j] != 0) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool collide(int dir)
+        {
+            for (int i = currentShape.y; i < currentShape.y + currentShape.sizeMatrix; i++)
+            {
+                for (int j = currentShape.x ; j < currentShape.x + currentShape.sizeMatrix; j++)
+                {
+                    if (currentShape.matrix[i - currentShape.y, j - currentShape.x] != 0)
+                    {
+                        if (j + 1 * dir > 7 || j + 1 * dir < 0) return true;
+                        if (map[i, j + 1 * dir] != 0) return true;                   
                     }
                 }
             }
@@ -127,25 +143,31 @@ namespace MyTetris
         {
             if (e.KeyCode==Keys.Left)
             {
-                currentShape.MoveLeft();
-                g = Graphics.FromImage(pictureBox1.Image);
-                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-                DrawGrid(g);
-                Marge();
-                DrawMap(g);
-                resetArea();
-                pictureBox1.Invalidate();
+                if (!collide(-1))
+                {
+                    currentShape.MoveLeft();
+                    g = Graphics.FromImage(pictureBox1.Image);
+                    g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                    DrawGrid(g);
+                    Marge();
+                    DrawMap(g);
+                    resetArea();
+                    pictureBox1.Invalidate();
+                }
             }
             if (e.KeyCode==Keys.Right)
             {
-                currentShape.MoveRight();
-                g = Graphics.FromImage(pictureBox1.Image);
-                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-                DrawGrid(g);
-                Marge();
-                DrawMap(g);
-                resetArea();
-                pictureBox1.Invalidate();
+                if (!collide(1))
+                {
+                    currentShape.MoveRight();
+                    g = Graphics.FromImage(pictureBox1.Image);
+                    g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                    DrawGrid(g);
+                    Marge();
+                    DrawMap(g);
+                    resetArea();
+                    pictureBox1.Invalidate();
+                }
             }
         }
     }
