@@ -33,12 +33,18 @@ namespace MyTetris
         {
             g = Graphics.FromImage(pictureBox1.Image);
             g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-            DrawGrid(g);
-            currentShape.MoveDown();
+
+            DrawGrid(g);                        
             Marge();
             DrawMap(g);
             resetArea();
-            
+
+            if (!collide()) currentShape.MoveDown();
+            else
+            {
+                Marge();
+                currentShape = new Shape(3, 0);
+            }
 
 
 
@@ -60,14 +66,30 @@ namespace MyTetris
 
         }
 
+        public bool collide()
+        {
+            for (int i = currentShape.y+currentShape.sizeMatrix-1; i >= currentShape.y; i--)
+            {
+                for (int j = currentShape.x + 1; j < currentShape.x + currentShape.sizeMatrix; j++)   //! +1
+                {
+                    if (currentShape.matrix[i-currentShape.y,j-currentShape.x]!=0)
+                    {
+                    if (i + 1 == 16) return true;
+                    if (map[i + 1, j] != 0) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void Marge()
         {
-            for (int i = currentShape.y; i < currentShape.y + 3; i++)
+            for (int i = currentShape.y; i < currentShape.y + currentShape.sizeMatrix; i++)
             {
-                for (int j = currentShape.x; j < currentShape.x + 3; j++)
+                for (int j = currentShape.x; j < currentShape.x + currentShape.sizeMatrix; j++)
                 {
-                    map[i, j] = currentShape.matrix[i - currentShape.y, j - currentShape.x];
-
+                    if (currentShape.matrix[i - currentShape.y, j - currentShape.x] != 0)
+                        map[i, j] = currentShape.matrix[i - currentShape.y, j - currentShape.x];
                 }
 
             }
@@ -87,12 +109,15 @@ namespace MyTetris
         }
         public void resetArea()
         {
-            for (int i = currentShape.y; i < currentShape.y + 3; i++)
+            for (int i = currentShape.y; i < currentShape.y + currentShape.sizeMatrix; i++)
             {
-                for (int j = currentShape.x; j < currentShape.x + 3; j++)
+                for (int j = currentShape.x; j < currentShape.x + currentShape.sizeMatrix; j++)
                 {
-                    map[i, j] = 0;
-
+                    if (i >= 0 && j >= 0 && i <= 16 && j <= 8)
+                    {                       
+                        if(currentShape.matrix[i-currentShape.y,j-currentShape.x]!=0)
+                           map[i, j] = 0;
+                    }
                 }
 
             }

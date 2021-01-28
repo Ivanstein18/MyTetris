@@ -11,6 +11,7 @@ namespace MyTetris
         public int x;
         public int y;
         public int[,] matrix;
+        public int sizeMatrix;
 
         public Shape(int x, int y)
         {
@@ -23,6 +24,7 @@ namespace MyTetris
                 {0,1,1},
                 {0,0,1}
             };
+            sizeMatrix = 3;
         }
 
         public void MoveDown()
@@ -31,10 +33,12 @@ namespace MyTetris
         }
         public void MoveRight()
         {
+            if(x<8-sizeMatrix)
             x++;
         }
         public void MoveLeft()
         {
+            if(x>=0)               //!  =
             x--;
         }
     }
