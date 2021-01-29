@@ -152,10 +152,16 @@ namespace MyTetris
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if (map[i, j] == 1)
-                    {
+                    if (map[i, j] == 1)                    
                         e.FillRectangle(Brushes.Red, new Rectangle(50 + j * size+1, 50 + i * size+1, size-1, size-1));
-                    }
+                    if (map[i, j] == 2)
+                        e.FillRectangle(Brushes.Blue, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
+                    if (map[i, j] == 3)
+                        e.FillRectangle(Brushes.Yellow, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
+                    if (map[i, j] == 4)
+                        e.FillRectangle(Brushes.Gray, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
+                    if (map[i, j] == 5)
+                        e.FillRectangle(Brushes.Green, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
                 }
             }
         }
