@@ -17,12 +17,16 @@ namespace MyTetris
             InitializeComponent();
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             size = 25;
+            score = 0;
+            linesRemoved = 0;
             currentShape = new Shape(3, 0);
             whiteBrush = new SolidBrush(Color.White);
             
         }
 
         int size;
+        int score;
+        int linesRemoved;
         int[,] map = new int[16, 8];
         Shape currentShape;
         SolidBrush whiteBrush;
@@ -42,13 +46,45 @@ namespace MyTetris
             if (!collide()) currentShape.MoveDown();
             else
             {
-                Marge();
-                currentShape = new Shape(3, 0);
+                Marge();                
+                currentShape = new Shape(3, 0);                
             }
-
+            sliseMap();
 
 
             pictureBox1.Invalidate();
+        }
+
+        public void sliseMap()
+        {
+            int count = 0;
+            int curRemovedLines = 0;
+            for (int i = 0; i < 16; i++)
+            {
+                count = 0;
+                for (int j = 0; j < 8; j++)
+                {
+                    if (map[i, j] != 0) count++;
+                }
+                if (count==8)
+                {
+                    curRemovedLines++;
+                    for (int k = i; k > 1; k--)                // k>0?
+                    {
+                        for (int o = 0; o < 8; o++)
+                        {
+                            map[k, o] = map[k - 1, o];
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i <= curRemovedLines; i++)            //??
+                score += 10 * curRemovedLines;                    //??  
+
+            linesRemoved += curRemovedLines;
+
+            label1.Text = "Score: " + score;
+            label2.Text = "Lines: " + linesRemoved;
         }
 
         public void DrawGrid(Graphics g)

@@ -20,9 +20,9 @@ namespace MyTetris
 
             matrix = new int[3, 3]
             {
-                {1,1,1},
-                {1,1,1},
-                {1,1,1}
+                {0,1,1},
+                {0,1,1},
+                {0,1,1}
             };
             sizeMatrix = 3;
         }
