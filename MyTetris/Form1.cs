@@ -78,8 +78,8 @@ namespace MyTetris
                     }
                 }
             }
-            for (int i = 0; i <= curRemovedLines; i++)            //??
-                score += 10 * curRemovedLines;                    //??  
+            for (int i = 0; i <= curRemovedLines; i++)            
+                score += 10 * i;                      
 
             linesRemoved += curRemovedLines;
 
