@@ -16,6 +16,7 @@ namespace MyTetris
         {
             InitializeComponent();
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            g = Graphics.FromImage(pictureBox1.Image);
             size = 25;
             score = 0;
             linesRemoved = 0;
@@ -34,10 +35,8 @@ namespace MyTetris
 
 
         private void timer1_Tick(object sender, EventArgs e)
-        {
-            g = Graphics.FromImage(pictureBox1.Image);
+        {            
             g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-
             DrawGrid(g);                        
             Marge();
             DrawMap(g);
@@ -183,12 +182,25 @@ namespace MyTetris
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode==Keys.Down)
+            {
+
+            }
+            if (e.KeyCode==Keys.Up)
+            {
+                currentShape.rotateShape();
+                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                DrawGrid(g);
+                Marge();
+                DrawMap(g);
+                resetArea();
+                pictureBox1.Invalidate();
+            }
             if (e.KeyCode==Keys.Left)
             {
                 if (!collide(-1))
                 {
-                    currentShape.MoveLeft();
-                    g = Graphics.FromImage(pictureBox1.Image);
+                    currentShape.MoveLeft();                    
                     g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
                     DrawGrid(g);
                     Marge();
@@ -201,8 +213,7 @@ namespace MyTetris
             {
                 if (!collide(1))
                 {
-                    currentShape.MoveRight();
-                    g = Graphics.FromImage(pictureBox1.Image);
+                    currentShape.MoveRight();                    
                     g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
                     DrawGrid(g);
                     Marge();
