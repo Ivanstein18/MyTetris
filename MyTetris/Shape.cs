@@ -25,28 +25,28 @@ namespace MyTetris
         {
             {0,2,0},
             {0,2,2},
-            {0,0,2},
+            {0,0,2}
         };
 
         public int[,] tetr3 = new int[3, 3]
        {
             {0,0,0},
             {3,3,3},
-            {0,3,0},
+            {0,3,0}
        };
 
         public int[,] tetr4 = new int[3, 3]
        {
             {4,0,0},
             {4,0,0},
-            {4,4,0},
+            {4,4,0}
        };
 
-        public int[,] tetr5 = new int[3, 3]
+        public int[,] tetr5 = new int[2, 2]
        {
-            {0,5,5},
-            {0,5,5},
-            {0,0,0},
+            {5,5},
+            {5,5}
+            
        };
 
         public Shape(int x, int y)
@@ -80,13 +80,13 @@ namespace MyTetris
                     matrix = tetr4;
                     break;
                 case 5:
-                    sizeMatrix = 3;
+                    sizeMatrix = 2;
                     matrix = tetr5;
                     break;
             }
         }
 
-        public void rotateShape()
+        public void rotateShape()                            // не работает как надо!
         {
             for (int i = 0; i < sizeMatrix; i++)
             {
@@ -96,6 +96,18 @@ namespace MyTetris
                     matrix[i, j] = matrix[j, i];
                     matrix[j, i] = temp;
                 }
+            }
+            int offset1 = (8 - (x + sizeMatrix));
+            if (offset1<0)
+            {
+                for (int i = 0; i < Math.Abs(offset1); i++)
+                    MoveLeft();
+            }
+            
+            if (x<0)
+            {
+                for (int i = 0; i < Math.Abs(x)+1; i++)
+                    MoveRight();
             }
         }
 

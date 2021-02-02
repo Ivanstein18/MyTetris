@@ -25,6 +25,7 @@ namespace MyTetris
             
         }
 
+        int oldTimerInterval;
         int size;
         int score;
         int linesRemoved;
@@ -42,11 +43,13 @@ namespace MyTetris
             DrawMap(g);
             resetArea();
 
-            if (!collide()) currentShape.MoveDown();
+            if (!collide())
+                currentShape.MoveDown();
             else
             {
                 Marge();                
-                currentShape = new Shape(3, 0);                
+                currentShape = new Shape(3, 0);
+                timer1.Interval = oldTimerInterval;
             }
             sliseMap();
 
@@ -77,6 +80,14 @@ namespace MyTetris
                     }
                 }
             }
+
+            g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+            DrawGrid(g);
+            Marge();
+            DrawMap(g);
+            resetArea();
+            pictureBox1.Invalidate();
+
             for (int i = 0; i <= curRemovedLines; i++)            
                 score += 10 * i;                      
 
@@ -156,7 +167,7 @@ namespace MyTetris
                     if (map[i, j] == 2)
                         e.FillRectangle(Brushes.Blue, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
                     if (map[i, j] == 3)
-                        e.FillRectangle(Brushes.Yellow, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
+                        e.FillRectangle(Brushes.Orange, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
                     if (map[i, j] == 4)
                         e.FillRectangle(Brushes.Gray, new Rectangle(50 + j * size + 1, 50 + i * size + 1, size - 1, size - 1));
                     if (map[i, j] == 5)
@@ -184,8 +195,8 @@ namespace MyTetris
         {
             if (e.KeyCode==Keys.Down)
             {
-
-
+                oldTimerInterval = timer1.Interval;
+                timer1.Interval = 1;
             }
             if (e.KeyCode==Keys.Up)
             {
