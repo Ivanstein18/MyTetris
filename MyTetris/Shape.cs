@@ -30,9 +30,9 @@ namespace MyTetris
 
         public int[,] tetr3 = new int[3, 3]
        {
-            {0,0,0},
             {3,3,3},
-            {0,3,0}
+            {0,3,0},
+            {0,0,0}
        };
 
         public int[,] tetr4 = new int[3, 3]

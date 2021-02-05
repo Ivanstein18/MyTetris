@@ -57,6 +57,20 @@ namespace MyTetris
             pictureBox1.Invalidate();
         }
 
+        public bool intersects()        // x3??
+        {
+            for (int i = currentShape.y; i < currentShape.y + currentShape.sizeMatrix; i++)
+            {
+                for (int j = currentShape.x; j < currentShape.x + currentShape.sizeMatrix; j++)
+                {
+                    if (map[i, j] != 0 && currentShape.matrix[i - currentShape.y, j - currentShape.x] == 0)        // если вращать с края, выходит за границы массиваh
+                        return true;
+
+                }
+            }
+            return false;
+        }
+
         public void sliseMap()
         {
             int count = 0;
@@ -95,6 +109,14 @@ namespace MyTetris
 
             label1.Text = "Score: " + score;
             label2.Text = "Lines: " + linesRemoved;
+
+            if(linesRemoved % 5==0 && linesRemoved!=0)
+            {
+                if (timer1.Interval < 10)
+                    timer1.Interval = 6;
+
+                timer1.Interval -= 5;
+            }
         }
 
         public void DrawGrid(Graphics g)
@@ -196,17 +218,20 @@ namespace MyTetris
             if (e.KeyCode==Keys.Down)
             {
                 oldTimerInterval = timer1.Interval;
-                timer1.Interval = 1;
+                timer1.Interval = 6;
             }
             if (e.KeyCode==Keys.Up)
             {
-                currentShape.rotateShape();
-                g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
-                DrawGrid(g);
-                Marge();
-                DrawMap(g);
-                resetArea();
-                pictureBox1.Invalidate();
+                if (!intersects())
+                {
+                    currentShape.rotateShape();
+                    g.FillRectangle(whiteBrush, 0, 0, pictureBox1.Width, pictureBox1.Height);
+                    DrawGrid(g);
+                    Marge();
+                    DrawMap(g);
+                    resetArea();
+                    pictureBox1.Invalidate();
+                }
             }
             if (e.KeyCode==Keys.Left)
             {
